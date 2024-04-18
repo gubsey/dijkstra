@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"math/rand"
 	"slices"
 	"strings"
@@ -11,26 +10,24 @@ import (
 type Grid [][]int
 
 func (grid Grid) Print(steps []Crd) {
-	for i := range len(grid) {
+	for i := 0; i < len(grid); i += 2 {
 		var line strings.Builder
 		for j := range len(grid[0]) {
 			//sb := strings.Builder{}
-
-			if i%2 == j%2 && i%2 == 1 {
-				fmt.Fprintf(&line, "%-4s", "")
-			} else if grid[i][j] == math.MaxInt {
-				fmt.Fprintf(&line, "%-4s", "\u221e")
-			} else {
-				is_path := slices.Contains(steps, Crd{j, i})
-				if is_path {
-					fmt.Fprint(&line, "\u001b[32m")
-				} else {
-					fmt.Fprint(&line, "\u001b[31m")
-				}
-				fmt.Fprintf(&line, "%-4d", grid[i][j])
-
-				fmt.Fprint(&line, "\u001b[0m")
+			if !((i%2 == 0) && (j%2 == 0)) {
+				continue
 			}
+
+			is_path := slices.Contains(steps, Crd{j, i})
+
+			if is_path {
+				fmt.Fprint(&line, "\u001b[32m")
+			} else {
+				fmt.Fprint(&line, "\u001b[31m")
+			}
+			//	fmt.Fprintf(&line, "%-4s", "\u221e")
+			fmt.Fprint(&line, "X")
+			fmt.Fprint(&line, "\u001b[0m")
 		}
 		str := line.String()
 		fmt.Println(str)
